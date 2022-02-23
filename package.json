@@ -1,0 +1,17 @@
+{
+  "name": "video-process-server",
+  "version": "1.0.0",
+  "description": "A video process server based on ffmpeg and express.",
+  "main": "index.js",
+  "module": "main.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Renjie Yun",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^8.9.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.3"
+  }
+}
