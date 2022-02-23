@@ -8,10 +8,12 @@ function run(command) {
     const pid = `${startTime}${process.pid}`;
 
     processes[pid]  = {
+        command: command,
         startedAt: startTime,
         finishedAt: -1,
         exitCode: -1,
         done: false,
+        stderr: "",
         duration: 0,
         currentTime: 0
     };
@@ -19,6 +21,7 @@ function run(command) {
     // ffmpeg output to stderr
     process.stderr.on('data', (data) => {
         const text = `${data}`;
+        processes[pid].stderr = text;
         if (!processes[pid].duration) {
             const m = text.match(/Duration: ([0-9]+):([0-9]+):([0-9]+.[0-9]+)/);
             if (m) {
