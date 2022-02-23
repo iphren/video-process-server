@@ -23,6 +23,7 @@ router.delete('/', (_, res) => {
             delete processes[pid];
         }
     }
+    res.json(processes);
 });
 
 const global = (o) => ((a, _, c) => { a.body.global = o; c(); });
