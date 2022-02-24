@@ -26,6 +26,15 @@ router.delete('/', (_, res) => {
     res.json(processes);
 });
 
+router.delete('/:pid', (req, res) => {
+    if (req.params.pid in processes) {
+        if (processes[req.params.pid].done) {
+            delete processes[req.params.pid];
+        }
+    }
+    res.status(204).end();
+});
+
 const global = (o) => ((a, _, c) => { a.body.global = o; c(); });
 const option = (o) => ((a, _, c) => { a.body.option = o; c(); });
 const ffmpeg = (req, res) => {
