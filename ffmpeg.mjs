@@ -5,7 +5,7 @@ const processes = {};
 function run(command) {
     const process = spawn(command, { shell: true });
     const startTime = Date.now();
-    const pid = `${startTime}${process.pid}`;
+    const pid = (+`${startTime}${process.pid}`).toString(36);
 
     processes[pid]  = {
         command: command,
