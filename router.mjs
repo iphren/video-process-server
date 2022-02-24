@@ -42,6 +42,9 @@ const ffmpeg = (req, res) => {
         req.body.global = '-y';
     }
     const pid = run(`ffmpeg ${req.body.global} -i "${req.body.input}" ${req.body.option} "${req.body.output}"`);
+    if ('outputDuration' in req.body) {
+        processes[pid].outputDuration = req.body.outputDuration;
+    }
     res.json({ pid: pid });
 };
 
@@ -51,8 +54,21 @@ router.post('/normalize', option('-filter:a loudnorm'), ffmpeg);
 
 router.post('/trim', (req, _, next) => {
     req.body.option = `-ss ${req.body.from} -to ${req.body.to} -c:v libx264 -c:a copy`;
+    req.body.outputDuration = t(req.body.to) - t(req.body.from);
     next();
 }, ffmpeg);
+
+function t(timeString) {
+    const tl = timeString.split(':');
+    var x = +tl.pop();
+    if (tl.length) {
+        x += +tl.pop() * 60;
+    }
+    if (tl.length) {
+        x += +tl.pop() * 3600;
+    }
+    return x;
+}
 
 router.post('/concat', (req, _, next) => {
     req.body.input = tempfile('.txt');
